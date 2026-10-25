@@ -1,0 +1,685 @@
+<!doctype html>
+<html class="dark" lang="en" style="">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-container": "#b3b1ff",
+              "primary-container": "#8083ff",
+              "on-secondary-fixed-variant": "#3323cc",
+              surface: "#0b1326",
+              "tertiary-fixed-dim": "#b8c4ff",
+              "surface-bright": "#31394d",
+              "on-primary": "#1000a9",
+              "on-surface": "#dae2fd",
+              "on-surface-variant": "#c7c4d7",
+              "surface-variant": "#2d3449",
+              "inverse-primary": "#494bd6",
+              "surface-container-low": "#131b2e",
+              primary: "#c0c1ff",
+              secondary: "#c3c0ff",
+              outline: "#908fa0",
+              "surface-container-lowest": "#060e20",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "secondary-container": "#3626ce",
+              "surface-container": "#171f33",
+              "error-container": "#93000a",
+              "on-tertiary-fixed": "#001354",
+              "on-error-container": "#ffdad6",
+              "surface-container-high": "#222a3d",
+              "on-background": "#dae2fd",
+              "surface-tint": "#c0c1ff",
+              "inverse-on-surface": "#283044",
+              "surface-dim": "#0b1326",
+              "surface-container-highest": "#2d3449",
+              "on-primary-container": "#0d0096",
+              "secondary-fixed-dim": "#c3c0ff",
+              "secondary-fixed": "#e2dfff",
+              "primary-fixed": "#e1e0ff",
+              tertiary: "#b8c4ff",
+              "on-secondary-fixed": "#0f0069",
+              "tertiary-container": "#6473b6",
+              "outline-variant": "#464554",
+              "on-tertiary-fixed-variant": "#334282",
+              "on-tertiary": "#1a2b6a",
+              "inverse-surface": "#dae2fd",
+              "on-tertiary-container": "#00031d",
+              background: "#0b1326",
+              "on-secondary": "#1d00a5",
+              "on-primary-fixed": "#07006c",
+              "on-error": "#690005",
+              "tertiary-fixed": "#dde1ff",
+              error: "#ffb4ab",
+              "primary-fixed-dim": "#c0c1ff",
+            },
+            borderRadius: {
+              DEFAULT: "1rem",
+              lg: "2rem",
+              xl: "3rem",
+              full: "9999px",
+            },
+            spacing: {
+              "space-lg": "1.5rem",
+              "space-sm": "0.5rem",
+              gutter: "1rem",
+              margin: "1.25rem",
+              "space-xl": "2rem",
+              "space-xs": "0.25rem",
+              "space-md": "1rem",
+            },
+            fontFamily: {
+              "label-md": ["Inter"],
+              "headline-lg": ["Plus Jakarta Sans"],
+              "headline-xl": ["Plus Jakarta Sans"],
+              "code-otp": ["Inter"],
+              "label-sm": ["Inter"],
+              "body-sm": ["Inter"],
+              "body-md": ["Inter"],
+              "headline-md": ["Plus Jakarta Sans"],
+              "label-lg": ["Inter"],
+              "headline-xl-mobile": ["Plus Jakarta Sans"],
+              "headline-lg-mobile": ["Plus Jakarta Sans"],
+              "body-lg": ["Inter"],
+            },
+            fontSize: {
+              "label-md": [
+                "13px",
+                {
+                  lineHeight: "18px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "500",
+                },
+              ],
+              "headline-lg": [
+                "32px",
+                {
+                  lineHeight: "40px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-xl": [
+                "40px",
+                {
+                  lineHeight: "48px",
+                  letterSpacing: "-0.03em",
+                  fontWeight: "700",
+                },
+              ],
+              "code-otp": [
+                "24px",
+                {
+                  lineHeight: "32px",
+                  letterSpacing: "0.15em",
+                  fontWeight: "600",
+                },
+              ],
+              "label-sm": [
+                "11px",
+                {
+                  lineHeight: "14px",
+                  letterSpacing: "0.04em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-sm": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.01em",
+                  fontWeight: "400",
+                },
+              ],
+              "body-md": [
+                "14px",
+                { lineHeight: "20px", letterSpacing: "0em", fontWeight: "400" },
+              ],
+              "headline-md": [
+                "20px",
+                {
+                  lineHeight: "28px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "label-lg": [
+                "15px",
+                {
+                  lineHeight: "20px",
+                  letterSpacing: "0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-xl-mobile": [
+                "30px",
+                {
+                  lineHeight: "38px",
+                  letterSpacing: "-0.025em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-lg-mobile": [
+                "24px",
+                {
+                  lineHeight: "32px",
+                  letterSpacing: "-0.015em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-lg": [
+                "16px",
+                {
+                  lineHeight: "24px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "400",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-surface text-on-surface min-h-screen selection:bg-primary-container selection:text-on-primary-container flex flex-col justify-between"
+  >
+    <header
+      class="fixed top-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] border-b border-surface-container/40"
+    >
+      <div class="h-16 w-full px-margin flex items-center justify-between">
+        <div class="flex items-center gap-space-md">
+          <div class="flex items-center gap-2.5">
+            <div
+              class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-container to-secondary-container flex items-center justify-center shadow-[0_0_15px_rgba(128,131,255,0.35)]"
+            >
+              <span
+                class="material-symbols-outlined text-on-primary text-[22px]"
+                >account_balance</span
+              >
+            </div>
+            <span
+              class="font-headline-md text-headline-md tracking-tight text-on-surface"
+              >CentralBanker</span
+            >
+          </div>
+          <div
+            class="hidden sm:flex items-center gap-space-xs px-space-sm py-0.5 rounded-full bg-surface-container border border-surface-container-high/60 text-tertiary text-label-sm font-label-sm"
+          >
+            <span class="material-symbols-outlined text-[14px]">lock</span
+            ><span class="">256-bit Encrypted</span
+            ><span class="text-outline/50 mx-0.5">•</span
+            ><span class="text-on-surface-variant"
+              >Monetary Policy Sandbox</span
+            >
+          </div>
+        </div>
+        <nav
+          class="hidden md:flex items-center gap-space-md"
+          data-active-classes="bg-surface-container-high text-on-surface font-label-md rounded-DEFAULT"
+        >
+          <a
+            aria-current="page"
+            class="px-space-md py-space-xs transition-colors bg-surface-container-high text-on-surface font-label-md rounded-DEFAULT"
+            data-path="login"
+            href="#"
+            >Sign In</a
+          ><a
+            class="px-space-md py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors font-label-md text-label-md"
+            data-path="register"
+            href="#"
+            >Register</a
+          ><a
+            class="px-space-md py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors font-label-md text-label-md"
+            data-path="single-sign-on"
+            href="#"
+            >Enterprise SSO</a
+          ><a
+            class="px-space-md py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors font-label-md text-label-md"
+            data-path="security-center"
+            href="#"
+            >Security Specs</a
+          >
+        </nav>
+        <div class="flex items-center gap-space-md">
+          <div
+            class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center shadow-[0_0_12px_rgba(192,193,255,0.15)]"
+          >
+            <span class="material-symbols-outlined text-primary text-[18px]"
+              >verified_user</span
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="w-full pt-16 bg-surface flex-grow">
+      <div
+        class="relative w-full overflow-hidden min-h-[calc(100vh-64px-72px)] flex items-center justify-center px-4 py-8 lg:px-12 lg:py-12"
+      >
+        <!-- Atmospheric Ambient Glows -->
+        <div
+          class="absolute top-1/4 -left-48 w-96 h-96 bg-primary-container/15 rounded-full blur-[140px] pointer-events-none"
+        ></div>
+        <div
+          class="absolute bottom-10 right-1/4 w-[32rem] h-[32rem] bg-secondary-container/20 rounded-full blur-[160px] pointer-events-none"
+        ></div>
+        <div
+          class="absolute top-10 right-12 w-80 h-80 bg-tertiary-container/10 rounded-full blur-[120px] pointer-events-none"
+        ></div>
+        <!-- Executive Two-Column Layout Grid -->
+        <div
+          class="relative w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
+        >
+          <!-- LEFT COLUMN: Central Bank Intelligence Showcase -->
+          <div
+            class="lg:col-span-7 flex flex-col justify-center space-y-6 lg:pr-4"
+          >
+            <!-- Trust Badge Pill -->
+            <div
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container/70 border border-primary/20 backdrop-blur-md self-start"
+            >
+              <span
+                class="w-2 h-2 rounded-full bg-primary animate-pulse"
+              ></span>
+              <span
+                class="font-label-sm text-label-sm text-tertiary tracking-wide uppercase"
+                >Accredited by Global Monetary Research Consortium</span
+              >
+            </div>
+            <!-- Main Headline & Narrative -->
+            <div class="space-y-3">
+              <h1
+                class="font-headline-xl text-3xl sm:text-4xl lg:text-[40px] leading-tight text-on-surface font-bold tracking-tight"
+              >
+                Next-Generation Monetary Policy Execution Sandbox
+              </h1>
+              <p
+                class="font-body-lg text-body-lg text-on-surface-variant max-w-xl"
+              >
+                Secure terminal access for central bankers, treasury ministers,
+                and chief macroeconomic modelers.
+              </p>
+            </div>
+            <!-- Core Capabilities Showcase Cards -->
+            <div class="grid grid-cols-1 gap-3.5 pt-2">
+              <!-- Feature 1 -->
+              <div
+                class="p-4 rounded-xl bg-surface-container-low/70 border border-surface-container-highest/60 backdrop-blur-md flex items-start gap-3.5 transition-all hover:border-primary/40 hover:bg-surface-container-low"
+              >
+                <div
+                  class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0 text-primary border border-surface-container-high"
+                >
+                  <span class="material-symbols-outlined text-[22px]"
+                    >tune</span
+                  >
+                </div>
+                <div>
+                  <h2
+                    class="font-headline-md text-[15px] font-semibold text-on-surface leading-snug"
+                  >
+                    Real-time Policy Transmission
+                  </h2>
+                  <p
+                    class="font-body-sm text-body-sm text-on-surface-variant mt-0.5"
+                  >
+                    Calibrate reserve requirements, benchmark rates, and asset
+                    purchase programs.
+                  </p>
+                </div>
+              </div>
+              <!-- Feature 2 -->
+              <div
+                class="p-4 rounded-xl bg-surface-container-low/70 border border-surface-container-highest/60 backdrop-blur-md flex items-start gap-3.5 transition-all hover:border-primary/40 hover:bg-surface-container-low"
+              >
+                <div
+                  class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0 text-secondary border border-surface-container-high"
+                >
+                  <span class="material-symbols-outlined text-[22px]"
+                    >ssid_chart</span
+                  >
+                </div>
+                <div>
+                  <h2
+                    class="font-headline-md text-[15px] font-semibold text-on-surface leading-snug"
+                  >
+                    Sovereign Debt Stress Scenarios
+                  </h2>
+                  <p
+                    class="font-body-sm text-body-sm text-on-surface-variant mt-0.5"
+                  >
+                    Run multi-factor contagion scenarios with live counterparty
+                    exposure heatmaps.
+                  </p>
+                </div>
+              </div>
+              <!-- Feature 3 -->
+              <div
+                class="p-4 rounded-xl bg-surface-container-low/70 border border-surface-container-highest/60 backdrop-blur-md flex items-start gap-3.5 transition-all hover:border-primary/40 hover:bg-surface-container-low"
+              >
+                <div
+                  class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0 text-tertiary border border-surface-container-high"
+                >
+                  <span class="material-symbols-outlined text-[22px]"
+                    >verified</span
+                  >
+                </div>
+                <div>
+                  <h2
+                    class="font-headline-md text-[15px] font-semibold text-on-surface leading-snug"
+                  >
+                    Cryptographic Auditing
+                  </h2>
+                  <p
+                    class="font-body-sm text-body-sm text-on-surface-variant mt-0.5"
+                  >
+                    Zero-knowledge audit trails and immutable simulation
+                    telemetry logs.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- Live Telemetry Status Bar -->
+            <div
+              class="flex items-center gap-2.5 p-3 rounded-lg bg-surface-container-lowest/80 border border-surface-container text-outline text-label-sm font-label-sm"
+            >
+              <span class="flex h-2 w-2 relative">
+                <span
+                  class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
+                ></span>
+                <span
+                  class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"
+                ></span>
+              </span>
+              <span
+                class="font-mono text-[12px] text-on-surface-variant tracking-tight"
+                >Terminal Node: US-EAST-SIM-04 • Latency 4ms • TLS 1.3
+                FIPS-140-3 Compliant</span
+              >
+            </div>
+          </div>
+          <!-- RIGHT COLUMN: Institutional Terminal Auth Form Card -->
+          <div class="lg:col-span-5">
+            <div
+              class="relative w-full rounded-2xl bg-surface-container-lowest/90 shadow-2xl backdrop-blur-2xl overflow-hidden p-6 sm:p-8 border border-surface-container-high/60"
+            >
+              <!-- Header: Title & Purpose -->
+              <div class="flex flex-col items-center text-center mb-6">
+                <div
+                  class="w-12 h-12 rounded-xl bg-surface-container-high border border-primary/20 flex items-center justify-center mb-3 shadow-md"
+                >
+                  <span
+                    class="material-symbols-outlined text-primary text-[26px]"
+                    >terminal</span
+                  >
+                </div>
+                <h2
+                  class="font-headline-md text-headline-md text-on-surface tracking-tight mb-1"
+                >
+                  Central Bank Terminal Login
+                </h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Enter institutional credentials to access your monetary
+                  workspace
+                </p>
+              </div>
+              <!-- Quick Passkey Option -->
+              <div class="mb-5">
+                <div class="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    class="flex items-center justify-center gap-2 px-3 py-2.5 rounded-DEFAULT bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors font-label-md text-label-md border border-surface-container-highest/60 group"
+                  >
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                      <path
+                        fill="#4285F4"
+                        d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
+                      ></path>
+                      <path
+                        fill="#34A853"
+                        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
+                      ></path>
+                      <path
+                        fill="#FBBC05"
+                        d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.14-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
+                      ></path>
+                      <path
+                        fill="#EA4335"
+                        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+                      ></path></svg
+                    ><span class="truncate">Google</span></button
+                  ><button
+                    type="button"
+                    class="flex items-center justify-center gap-2 px-3 py-2.5 rounded-DEFAULT bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors font-label-md text-label-md border border-surface-container-highest/60 group"
+                  >
+                    <svg
+                      class="w-4 h-4 fill-current shrink-0 text-on-surface"
+                      viewBox="0 0 170 170"
+                    >
+                      <path
+                        d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.58-7.7-11.65-13.98-6.19-9.54-10.97-20.35-14.34-32.43-3.37-12.08-5.06-23.23-5.06-33.45 0-14.53 3.6-26.68 10.8-36.45 7.2-9.76 16.4-14.73 27.61-14.9 4.89 0 10.32 1.34 16.29 4.02 5.97 2.68 9.77 4.07 11.4 4.19 1.3 0 5.25-1.47 11.84-4.41 6.59-2.94 12.3-4.21 17.15-3.82 13.04.87 23.47 5.76 31.3 14.67-11.51 6.94-17.15 16.5-16.94 28.67.22 9.55 3.86 17.58 10.92 24.09 7.06 6.51 15.42 10.2 25.07 11.07-2.39 7.38-5.38 15.02-8.98 22.91zM119.22 31.84c0-7.39 2.65-14.39 7.94-20.99 5.3-6.61 11.83-10.56 19.61-11.85.22 1.09.33 2.07.33 2.94 0 7.39-2.8 14.49-8.4 21.31-5.6 6.81-12.33 10.74-20.19 11.78-.22-1.08-.33-2.15-.33-3.19z"
+                      ></path></svg
+                    ><span class="truncate">Apple</span>
+                  </button>
+                </div>
+              </div>
+              <!-- Divider -->
+              <div class="relative flex items-center justify-center my-4">
+                <div class="w-full h-px bg-surface-variant"></div>
+                <span
+                  class="absolute px-3 bg-surface-container-lowest font-label-sm text-label-sm text-outline uppercase tracking-wider"
+                  >or with credentials</span
+                >
+              </div>
+              <!-- Main Login Form -->
+              <form
+                class="space-y-4"
+                id="loginForm"
+                onsubmit="
+                  event.preventDefault();
+                  handleAuthSubmit();
+                "
+              >
+                <div class="space-y-1.5">
+                  <label
+                    class="block font-label-sm text-label-sm text-on-surface-variant"
+                    for="identifier"
+                    >Email or Terminal ID</label
+                  >
+                  <div class="relative flex items-center">
+                    <span
+                      class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none"
+                      >badge</span
+                    >
+                    <input
+                      class="w-full h-11 pl-11 pr-4 rounded-DEFAULT bg-surface-container text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary focus:bg-surface-container-high transition-all border border-transparent focus:border-primary/50"
+                      id="emailinput"
+                      name="identifier"
+                      placeholder="evelyn.vance@centralbanker.org"
+                      required=""
+                      type="email"
+                    />
+                  </div>
+                </div>
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <label
+                      class="block font-label-sm text-label-sm text-on-surface-variant"
+                      for="passwordField"
+                      >Security Passphrase</label
+                    >
+                    <a
+                      class="font-label-sm text-label-sm text-primary hover:text-primary-fixed transition-colors"
+                      href="#"
+                      >Forgot password?</a
+                    >
+                  </div>
+                  <div class="relative flex items-center">
+                    <span
+                      class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none"
+                      >shield_lock</span
+                    >
+                    <input
+                      class="w-full h-11 pl-11 pr-11 rounded-DEFAULT bg-surface-container text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary focus:bg-surface-container-high transition-all border border-transparent focus:border-primary/50"
+                      id="passwordinput"
+                      name="password"
+                      placeholder="••••••••••••••••"
+                      required=""
+                      type="password"
+                    />
+                    <button
+                      aria-label="Toggle password visibility"
+                      class="absolute right-3 text-outline hover:text-on-surface transition-colors p-1"
+                      id="togglePasswordBtn"
+                      type="button"
+                    >
+                      <span
+                        class="material-symbols-outlined text-[18px]"
+                        id="pwdToggleIcon"
+                        >visibility_off</span
+                      >
+                    </button>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between pt-1">
+                  <label
+                    class="flex items-center gap-2 cursor-pointer select-none"
+                  >
+                    <input
+                      checked=""
+                      class="w-4 h-4 rounded bg-surface-container text-primary-container focus:ring-0 focus:outline-none accent-primary-container cursor-pointer"
+                      id="rememberDevice"
+                      type="checkbox"
+                    />
+                    <span
+                      class="font-body-sm text-body-sm text-on-surface-variant"
+                      >Remember terminal</span
+                    >
+                  </label>
+                  <div
+                    class="flex items-center gap-1 text-outline font-label-sm text-label-sm"
+                  >
+                    <span
+                      class="material-symbols-outlined text-[14px] text-primary"
+                      >verified_user</span
+                    >
+                    <span class="">Encrypted session</span>
+                  </div>
+                </div>
+                <!-- Primary CTA -->
+                <button
+                  class="w-full h-11 rounded-full bg-gradient-to-r from-primary-container to-secondary-container hover:opacity-95 active:scale-[0.99] text-on-primary font-label-md text-label-md tracking-wide shadow-lg shadow-primary-container/20 flex items-center justify-center gap-2 transition-all cursor-pointer font-semibold"
+                  id="submitBtn"
+                  type="submit"
+                >
+                  <span id="btnText" class="">Access Terminal</span>
+                  <span
+                    class="material-symbols-outlined text-[18px]"
+                    id="btnIcon"
+                    >arrow_forward</span
+                  >
+                </button>
+              </form>
+              <!-- Institutional Identity Providers Row -->
+
+              <!-- Bottom Registration Link & Status -->
+              <div
+                class="mt-5 pt-3.5 border-t border-surface-variant/70 flex flex-col items-center gap-1 text-center"
+              >
+                <div class="font-body-sm text-body-sm text-on-surface-variant">
+                  <span class="">Don't have an account?</span
+                  ><a
+                    class="font-label-md text-label-md text-primary hover:text-primary-fixed ml-1 transition-colors font-medium"
+                    data-path="register"
+                    href="../signuppage/signup.html"
+                    >Sign up</a
+                  >
+                </div>
+                <div
+                  class="flex items-center gap-1.5 text-outline font-label-sm text-label-sm mt-1"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  <span class="">SOC2 Type II &amp; BIS Sandbox Certified</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="./login_DOM.js"></script>
+    </main>
+    <footer
+      class="w-full bg-surface-container-lowest/90 backdrop-blur-md border-t border-surface-container/50"
+    >
+      <div
+        class="w-full px-margin py-space-md flex flex-col md:flex-row items-center justify-between gap-space-md text-on-surface-variant font-label-sm text-label-sm"
+      >
+        <div class="flex items-center gap-space-sm">
+          <span class="material-symbols-outlined text-[16px] text-tertiary"
+            >shield_lock</span
+          ><span class=""
+            >CentralBanker Identity Infrastructure © 2025. Basel III
+            Compliant.</span
+          >
+        </div>
+        <div class="flex items-center gap-space-lg">
+          <a
+            class="hover:text-on-surface transition-colors"
+            data-path="privacy"
+            href="#"
+            >Privacy Statement</a
+          ><a
+            class="hover:text-on-surface transition-colors"
+            data-path="terms"
+            href="#"
+            >Terms of Service</a
+          ><a
+            class="hover:text-on-surface transition-colors"
+            data-path="specs"
+            href="#"
+            >Model Specs</a
+          >
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
