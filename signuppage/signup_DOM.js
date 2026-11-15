@@ -1,3 +1,13 @@
+import app from "../config.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  RecaptchaVerifier,
+} from "firebase/auth";
+
+const auth = getAuth(app);
+
 (function () {
   const passwordInput = document.getElementById("passwordInput");
   const toggleBtn = document.getElementById("togglePassword");
@@ -95,7 +105,7 @@ const form = document.querySelector("#signupForm");
 const submitBtn = document.querySelector("#submitBtn");
 const confirmStrengthText = document.querySelector("#confirmStrengthText"); // make sure this exists
 
-form.addEventListener("submit", function (e) {
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   let username = document.querySelector("#usernameInput").value.trim();
@@ -118,12 +128,12 @@ form.addEventListener("submit", function (e) {
 
   console.log(username, email, password);
 
-  let users;
-  if (localStorage.getItem("users")) {
-    users = JSON.parse(localStorage.getItem("users"));
-  } else {
-    users = [];
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    console.error("Error creating user:", error);
+    alert("Error creating user. Please try again.");
+    return;
   }
-
-  location.href = "./login.html";
+  location.href = "../simulatorpage/simulator.html";
 });
