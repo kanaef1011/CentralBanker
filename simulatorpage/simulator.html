@@ -4,12 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Central Bank Simulator</title>
+    <!-- Nạp font từ Google Fonts: Be Vietnam Pro (chữ thường) và Fraunces (tiêu đề). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,650&display=swap"
       rel="stylesheet"
     />
+    <!--
+       CSS được chia theo từng phần. Thứ tự quan trọng:
+       base.css (biến màu) phải nạp trước, responsive.css nạp sau cùng để ghi đè.
+    -->
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/layout.css" />
     <link rel="stylesheet" href="css/views/briefing.css" />
@@ -22,6 +27,7 @@
     <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
+    <!-- Thanh trên cùng. Các thẻ có id (hScen, hQbar...) để trống, JavaScript sẽ điền nội dung. -->
     <header class="top">
       <div class="brand">
         <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
@@ -64,6 +70,7 @@
         <span class="k">Running score</span><span class="v" id="hScore"></span>
       </div>
     </header>
+    <!-- Thanh tab. data-tab cho JavaScript biết bấm nút nào thì mở tab nào. -->
     <nav class="tabs" role="tablist" aria-label="Stages">
       <button role="tab" data-tab="brief" id="tab-brief">
         <span class="n">1</span>Briefing
@@ -81,6 +88,7 @@
         <span class="n">?</span>Learn &amp; model
       </button>
     </nav>
+    <!-- Nội dung chính: mỗi <section> là một tab. HTML bên trong do các file js/views/*.js tạo ra. -->
     <main>
       <section class="view" id="v-brief"></section>
       <section class="view" id="v-play"></section>
@@ -88,9 +96,14 @@
       <section class="view" id="v-compare"></section>
       <section class="view" id="v-learn"></section>
     </main>
+    <!-- Hộp thoại dùng chung (ẩn cho tới khi cần). -->
     <div class="overlay" id="ov">
       <div class="dialog" role="dialog" aria-modal="true" id="dlg"></div>
     </div>
+    <!--
+       type="module" cho phép dùng import/export.
+       Chỉ cần nạp main.js; nó sẽ tự import các file JavaScript khác.
+    -->
     <script type="module" src="js/main.js"></script>
   </body>
 </html>

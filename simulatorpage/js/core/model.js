@@ -1,7 +1,30 @@
+// MÔ HÌNH KINH TẾ
+// File này chỉ làm phép tính, KHÔNG đụng tới giao diện (DOM).
+// Nhờ tách riêng như vậy, ta có thể chạy thử mô hình bằng Node mà không cần trình duyệt.
+// Mỗi lần gọi stepRun() = kinh tế đi thêm 1 quý (3 tháng).
+
 // ===== ECONOMIC MODEL (pure, no DOM) =====
+// Mục tiêu lạm phát 2%/năm: mức mà phần lớn ngân hàng trung ương (Fed, ECB...) theo đuổi.
 export const PI_TARGET = 2;
+// Số quý của nhiệm kỳ: 12 quý = 3 năm.
 export const N_Q = 12;
 
+// 5 KỊCH BẢN. Khoá viết không dấu: lam-phat = lạm phát, suy-thoai = suy thoái,
+// khung-hoang = khủng hoảng, dinh-lam = đình lạm, ha-canh = hạ cánh mềm.
+// Ý nghĩa các trường số liệu ban đầu:
+//   pi0 / piPrev : lạm phát quý này / quý trước (%)
+//   y0 / yPre    : output gap = cầu so với năng lực sản xuất (%); yPre là 4 quý trước đó
+//   u0           : tỷ lệ thất nghiệp (%)
+//   i0           : lãi suất chính sách (%)
+//   B0           : bảng cân đối của NHTW (% GDP)
+//   c0           : uy tín của NHTW, từ 0 (không ai tin) đến 1 (ai cũng tin)
+//   rstar        : lãi suất thực trung lập (không kích thích cũng không kìm hãm)
+//   uStar / gPot : thất nghiệp tự nhiên / tăng trưởng tiềm năng
+//   tp / sp      : phần bù kỳ hạn / chênh lệch rủi ro khi vay
+//   stress0      : mức căng thẳng tài chính
+//   supply0, supplyRho : cú sốc cung (giá dầu, lương...) và tốc độ nó tắt dần
+//   demand0      : cú sốc cầu
+//   events       : sự kiện bất ngờ, đánh số theo quý (2 = xảy ra ở quý 2)
 export const SCENARIOS = {
   "lam-phat": {
     name: "Inflation surge",
@@ -226,6 +249,7 @@ export const SCENARIOS = {
   },
 };
 
+// 5 mức định hướng chính sách (forward guidance). v âm = nghiêng về nới lỏng, v dương = nghiêng về thắt chặt.
 export const FG_LEVELS = [
   {
     v: -2,
@@ -254,8 +278,13 @@ export const FG_LEVELS = [
   },
 ];
 
+// Kẹp x vào trong khoảng [a, b]. Ví dụ: clamp(15, 0, 12) = 12; clamp(-3, 0, 12) = 0.
 export const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 
+// Bộ sinh số ngẫu nhiên có "hạt giống" (seed).
+// Cùng một seed luôn cho ra cùng một dãy số, nên mọi chiến lược đều gặp cùng một "vận may"
+// và việc so sánh mới công bằng. Math.random() không làm được điều này vì mỗi lần mỗi khác.
+// (Các phép >>> , ^ , Math.imul là thao tác trên bit; không cần hiểu chi tiết để dùng.)
 export function makeRng(seed) {
   let a = seed >>> 0;
   return function () {
@@ -266,7 +295,9 @@ export function makeRng(seed) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
-//
+// Tạo sẵn danh sách cú sốc nhỏ cho từng quý: d = sốc cầu, p = sốc giá.
+// Hàm g() dùng phép biến đổi Box–Muller để đổi số ngẫu nhiên đều thành phân phối chuẩn (hình chuông):
+// phần lớn cú sốc nhỏ, thỉnh thoảng mới có cú lớn.
 export function makeShocks(seed) {
   const r = makeRng(seed);
   const g = () => {
@@ -279,11 +310,18 @@ export function makeShocks(seed) {
   return out;
 }
 
-//
+// ĐIỀU KIỆN TÀI CHÍNH: từ công cụ của NHTW tính ra lãi suất người dân và doanh nghiệp thực sự phải trả.
+// Tham số: i = lãi suất chính sách, B = bảng cân đối, stress = căng thẳng thị trường,
+// piE = lạm phát kỳ vọng, fg = định hướng, c = uy tín, y = output gap.
 export function finance(sc, i, B, stress, piE, fg, c, y) {
+  // QE có tác dụng mạnh hơn khi thị trường đang căng thẳng. 10 = quy mô bảng cân đối bình thường.
   const qeEff = (B - 10) * (1 + 0.6 * stress);
+  // Phần bù kỳ hạn: tăng khi thị trường căng thẳng, giảm khi NHTW mua trái phiếu (QE).
   const tp = Math.max(-1, sc.tp + 0.35 * stress - 0.045 * qeEff);
+  // Lợi suất trái phiếu 10 năm ≈ ½ lãi suất hôm nay + ½ lãi suất "bình thường" dài hạn
+  // + phần bù kỳ hạn + tác động của lời định hướng (nhân với uy tín c: càng uy tín, lời nói càng có trọng lượng).
   const L = 0.5 * i + 0.5 * (sc.rstar + piE) + tp + 0.35 * fg * c;
+  // Ngân hàng đòi thêm phần bù rủi ro, nhất là khi thị trường căng thẳng hoặc kinh tế suy yếu.
   const sp = Math.max(
     0.6,
     sc.sp +
@@ -291,14 +329,20 @@ export function finance(sc, i, B, stress, piE, fg, c, y) {
       0.08 * Math.max(0, -y) -
       0.02 * Math.max(0, B - 10) * stress,
   );
+  // Lãi suất vay bình quân = lợi suất 10 năm + phần bù rủi ro.
   const lend = L + sp;
+  // Lãi suất THỰC = lãi suất danh nghĩa − lạm phát kỳ vọng. Đây mới là chi phí vay thật sự.
   const rl = lend - piE;
+  // f = lãi suất thực so với mức trung lập. f > 0: điều kiện thắt chặt; f < 0: nới lỏng.
   const neutral = sc.rstar + sc.tp + sc.sp;
   return { tp, L, sp, lend, rl, f: rl - neutral };
 }
 
+// Tạo một "ván chơi" mới.
+// run.H (History = lịch sử) là mảng các quý; H[0] là tình hình lúc bắt đầu nhiệm kỳ.
 export function initRun(key, seed) {
   const sc = SCENARIOS[key];
+  // Lạm phát kỳ vọng = uy tín × mục tiêu 2% + (1 − uy tín) × lạm phát gần đây.
   const piE0 = sc.c0 * PI_TARGET + (1 - sc.c0) * sc.piPrev;
   const fin0 = finance(sc, sc.i0, sc.B0, sc.stress0, piE0, 0, sc.c0, sc.y0);
   const g0 = sc.gPot + (sc.y0 - sc.yPre[0]);
@@ -333,53 +377,73 @@ export function initRun(key, seed) {
   };
 }
 
-//
+// TRÁI TIM CỦA MÔ HÌNH
+// Nhận quyết định dec = { i: lãi suất, qe: mua/bán tài sản, fg: định hướng },
+// tính ra tình hình kinh tế của quý tiếp theo rồi thêm vào run.H.
 export function stepRun(run, dec, opts = {}) {
   const sc = SCENARIOS[run.key];
   const H = run.H;
   const t = H.length - 1;
   const s = H[t];
+  // prev = quý trước nữa. Cần nó vì chính sách tác động có ĐỘ TRỄ (1–3 quý).
   const prev = t > 0 ? H[t - 1] : { f: s.f, y: run.yPre[3] };
   const noise = opts.noise !== undefined ? opts.noise : run.noise;
+  // Lấy cú sốc ngẫu nhiên của quý này (nếu người chơi bật "Include uncertainty").
   const sh = noise ? run.shocks[t + 1] : { d: 0, p: 0 };
+  // Sự kiện kịch bản của quý tới (nếu có).
   const ev = opts.noEvents ? null : sc.events[t + 1] || null;
 
+  // Làm tròn lãi suất tới bước 0,25 điểm % và giữ trong khoảng 0–12%.
   const i = clamp(Math.round(dec.i * 4) / 4, 0, 12);
   const B = clamp(s.B + dec.qe, 5, 45);
   const qe = B - s.B;
   const fg = dec.fg;
   const di = i - s.i;
 
-  //
+  // --- UY TÍN (credibility) ---
+  // Mỗi quý uy tín tăng nhẹ, nhưng giảm nếu lạm phát xa mục tiêu.
+  // "Nói một đằng làm một nẻo" (hứa tăng lãi suất mà lại giảm, hoặc ngược lại) → mất 0,08.
+  // Giữ đúng lời hứa → được cộng thêm.
   let dc = 0.015 - 0.01 * Math.abs(s.pi - PI_TARGET);
   if (s.fg >= 1 && di < -0.01) dc -= 0.08;
   if (s.fg <= -1 && di > 0.01) dc -= 0.08;
   if ((s.fg >= 1 && di > 0.01) || (s.fg <= -1 && di < -0.01)) dc += 0.015;
   const c = clamp(s.c + dc, 0.15, 0.9);
 
+  // Các cú sốc tắt dần (nhân với hệ số < 1 mỗi quý), cộng thêm tác động của sự kiện mới.
   const stress = Math.max(0, s.stress * 0.75 + ((ev && ev.stress) || 0));
   const supply = s.supply * sc.supplyRho + ((ev && ev.supply) || 0);
   const demand = s.demand * 0.6 + ((ev && ev.demand) || 0);
+  // Kỳ vọng lạm phát: càng uy tín, người dân càng tin lạm phát sẽ về 2%.
   const piE = c * PI_TARGET + (1 - c) * s.pi;
   const fin = finance(sc, i, B, stress, piE, fg, c, s.y);
 
+  // Giá trị của 2 quý trước, dùng để mô phỏng độ trễ.
   const yLag2 = t >= 1 ? H[t - 1].y : run.yPre[3];
   const fLag2 = prev.f;
+  // OUTPUT GAP (cầu so với năng lực sản xuất):
+  // 72% giữ quán tính từ quý trước − tác động của điều kiện tài chính
+  // (30% từ quý này, 45% từ quý trước, 25% từ hai quý trước) + sự kiện + sốc ngẫu nhiên.
   const y =
     0.72 * s.y -
     0.42 * (0.3 * fin.f + 0.45 * s.f + 0.25 * fLag2) +
     demand +
     sh.d;
-  //
+  // LẠM PHÁT LÕI: 60% quán tính + 40% kỳ vọng + áp lực cầu (đường Phillips).
   const core =
     0.6 * s.core + 0.4 * piE + 0.16 * (0.5 * s.y + 0.5 * yLag2) + sh.p;
+  // LẠM PHÁT CHUNG = lạm phát lõi + sốc cung (giá dầu, lương...).
   const pi = core + supply;
+  // THẤT NGHIỆP (định luật Okun): mỗi quý dịch dần 45% về mức (tự nhiên − 0,45 × output gap).
   const u = s.u + 0.45 * (sc.uStar - 0.45 * y - s.u);
+  // Tăng trưởng GDP so với cùng kỳ năm trước = tăng trưởng tiềm năng + thay đổi output gap trong 4 quý.
   const yAgo = t + 1 - 4 >= 0 ? H[t + 1 - 4].y : run.yPre[t + 1];
   const g = sc.gPot + (y - yAgo);
+  // Tăng trưởng tín dụng: cao khi kinh tế nóng và tiền rẻ.
   const credit = clamp(7 + 1.2 * y - 2.0 * fin.f, -8, 25);
 
-  //
+  // Lưu PHẦN ĐÓNG GÓP của từng yếu tố (cy: vào cầu, cpi: vào lạm phát)
+  // để giao diện giải thích được "vì sao" kinh tế thay đổi.
   const cy = {
     inertia: -0.28 * s.y,
     fin: -0.42 * (0.3 * fin.f + 0.45 * s.f + 0.25 * fLag2),
@@ -392,6 +456,7 @@ export function stepRun(run, dec, opts = {}) {
     supply: supply - s.supply,
     shock: sh.p,
   };
+  // Gói tất cả kết quả của quý mới thành một object rồi thêm vào lịch sử.
   const row = {
     cy,
     cpi,
@@ -420,7 +485,8 @@ export function stepRun(run, dec, opts = {}) {
   return row;
 }
 
-//
+// DỰ BÁO CỦA CHUYÊN VIÊN: chạy thử k quý tới trên một BẢN SAO của ván chơi,
+// không có sốc ngẫu nhiên và sự kiện. Dùng bản sao để không làm thay đổi ván thật.
 export function forecast(run, dec, k = 4) {
   const clone = { ...run, H: run.H.map((r) => ({ ...r })) };
   const out = [];
@@ -435,7 +501,9 @@ export function forecast(run, dec, k = 4) {
   return out;
 }
 
-//
+// QUY TẮC TAYLOR (John Taylor, 1993) — chiến lược mẫu để so sánh:
+// lãi suất mục tiêu = lãi suất trung lập + lạm phát + 0,5 × (lạm phát − 2%) + 0,5 × output gap.
+// Điều chỉnh từ từ (55% lãi suất cũ + 45% mục tiêu). Khi lãi suất chạm 0% thì dùng thêm QE.
 export function taylorDecision(run) {
   const sc = SCENARIOS[run.key];
   const s = run.H[run.H.length - 1];
@@ -447,10 +515,12 @@ export function taylorDecision(run) {
   const fg = target > i + 0.75 ? 1 : target < i - 0.75 ? -1 : 0;
   return { i, qe: Math.round(qe * 2) / 2, fg };
 }
+// Chiến lược "không làm gì": giữ nguyên lãi suất, không QE, định hướng trung lập.
 export function holdDecision(run) {
   const s = run.H[run.H.length - 1];
   return { i: s.i, qe: 0, fg: 0 };
 }
+// Chạy đủ 12 quý với một chiến lược tự động fn (dùng cho tab So sánh).
 export function simulateStrategy(key, seed, noise, fn) {
   const run = initRun(key, seed);
   run.noise = noise;
@@ -458,7 +528,9 @@ export function simulateStrategy(key, seed, noise, fn) {
   return run;
 }
 
-//
+// CHẤM ĐIỂM nhiệm kỳ (0–100).
+// Quý càng về sau càng có trọng số lớn (w), vì tình hình lúc đầu là "di sản" người chơi được giao lại.
+// Mỗi mục tính bằng 100 × e^(−sai lệch / mức chịu đựng): sai lệch 0 → 100 điểm, càng lệch càng giảm.
 export function scoreRun(run) {
   const sc = SCENARIOS[run.key];
   const rows = run.H.slice(1);
@@ -493,6 +565,7 @@ export function scoreRun(run) {
     fin: 100 * Math.exp(-(vol / 0.6 + st + bsPen)),
     cred: clamp((last.c - 0.15) / 0.75, 0, 1) * 100,
   };
+  // Tổng có trọng số: giá cả 30%, việc làm 25%, sản lượng 15%, tài chính 15%, uy tín 15%.
   const total =
     0.3 * parts.price +
     0.25 * parts.jobs +
@@ -501,6 +574,7 @@ export function scoreRun(run) {
     0.15 * parts.cred;
   return { parts, total, ePi, eU, eG, vol };
 }
+// Đổi điểm số thành xếp loại A–E.
 export function grade(x) {
   if (x >= 85) return "A";
   if (x >= 72) return "B";

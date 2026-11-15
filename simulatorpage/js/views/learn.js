@@ -1,8 +1,11 @@
+// TAB ? – LEARN: kiến thức nền, mô hình và cách chấm điểm.
+
 import { forecast } from "../core/model.js";
 import { $, SC, pct } from "../core/utils.js";
 import { closeDialog, openDialog } from "../ui/dialogs.js";
 
 // ===== LEARN =====
+// Nội dung các thẻ kiến thức: t = tiêu đề, b = nội dung HTML (<dl> là danh sách định nghĩa).
 export const LEARN = {
   rate: {
     t: "Policy rate",
@@ -41,6 +44,7 @@ export const LEARN = {
     <dt>Real-world example</dt><dd>In August 2011 the Fed said it expected to keep rates exceptionally low “at least through mid-2013”. In 2012 ECB President Mario Draghi pledged to do “whatever it takes” to preserve the euro, and bond yields in several countries fell sharply.</dd></dl>`,
   },
 };
+// Vẽ tab Learn từ dữ liệu LEARN cộng thêm vài thẻ cố định.
 export function renderLearn() {
   const sc = SC();
   $("#v-learn").innerHTML = `<div class="learn">
@@ -92,6 +96,7 @@ export function renderLearn() {
       <dt>pp (percentage point)</dt><dd>The arithmetic difference between two percentages: from 3% to 4% is a rise of 1 pp.</dd></dl></div>
   </div>`;
 }
+// Mở một thẻ kiến thức trong hộp thoại (nút "What is this?").
 export function learnDialog(k) {
   const x = LEARN[k];
   openDialog(

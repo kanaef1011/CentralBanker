@@ -1,3 +1,7 @@
+// ĐÁNH GIÁ CHỈ SỐ
+// Mỗi hàm trả về một mảng [màu, nhãn], ví dụ ['good', 'On target'].
+// "màu" được dùng làm class CSS: good (xanh), warn (cam), bad (đỏ), neu (trung tính).
+
 import { PI_TARGET } from "../core/model.js";
 import { SC } from "../core/utils.js";
 

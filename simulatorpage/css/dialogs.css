@@ -1,4 +1,7 @@
+/* HỘP THOẠI */
+
 /* Dialogs */
+/* Lớp phủ tối toàn màn hình (position: fixed; inset: 0). Ẩn mặc định, thêm class "on" để hiện. */
 .overlay {
   position: fixed;
   inset: 0;

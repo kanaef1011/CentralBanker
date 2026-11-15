@@ -1,4 +1,10 @@
+/* TAB 1 – BRIEFING */
+
 /* Briefing */
+/*
+   CSS Grid 2 cột: cột trái rộng cố định 330px, cột phải chiếm phần còn lại (1fr).
+   minmax(0, 1fr) ngăn nội dung dài làm vỡ cột.
+*/
 .brief-grid {
   display: grid;
   grid-template-columns: 330px minmax(0, 1fr);
@@ -26,6 +32,7 @@
   color: var(--muted);
   font-size: 12.5px;
 }
+/* Kịch bản đang chọn: viền màu chủ đạo và vạch màu bên trái (box-shadow inset). */
 .sc[aria-pressed="true"] {
   border-color: var(--accent);
   box-shadow: inset 3px 0 0 var(--accent);

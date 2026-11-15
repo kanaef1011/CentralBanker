@@ -1,4 +1,7 @@
+/* BỐ CỤC CHUNG: thanh trên cùng, thanh tab, khung nội dung, nhãn (pill) và nút bấm. */
+
 /* Header */
+/* display: flex xếp các phần tử theo hàng ngang; flex-wrap cho phép xuống dòng khi màn hình hẹp. */
 .top {
   display: flex;
   flex-wrap: wrap;
@@ -40,6 +43,7 @@
   font-weight: 600;
   font-size: 14px;
 }
+/* Thanh tiến độ: mỗi ô <i> là một quý; ô có class "on" là quý đã qua. */
 .qbar {
   display: flex;
   gap: 3px;
@@ -69,6 +73,7 @@
   background: var(--brass);
 }
 
+/* overflow-x: auto: màn hình hẹp thì thanh tab cuộn ngang được. */
 nav.tabs {
   display: flex;
   gap: 4px;
@@ -98,6 +103,7 @@ nav.tabs button .n {
   border: 1px solid var(--line);
   font-size: 11px;
 }
+/* Tab đang chọn: chữ đậm màu hơn và có gạch chân màu chủ đạo. */
 nav.tabs button[aria-selected="true"] {
   color: var(--ink);
   border-bottom-color: var(--accent);
@@ -111,12 +117,14 @@ nav.tabs button[aria-selected="true"] .n {
 main {
   padding: 16px 20px 40px;
 }
+/* Mỗi tab là một <section class="view">. Mặc định ẩn; section nào có class "on" mới hiện. */
 .view {
   display: none;
 }
 .view.on {
   display: block;
 }
+/* Khung trắng bo góc dùng khắp nơi. */
 .panel {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -135,6 +143,7 @@ main {
   flex-wrap: wrap;
 }
 
+/* Nhãn tròn nhỏ; thêm class good/warn/bad để đổi màu theo trạng thái. */
 .pill {
   display: inline-flex;
   align-items: center;
@@ -169,6 +178,7 @@ main {
   border-color: var(--accent);
 }
 
+/* Nút bấm; .primary = nút chính (tô màu), .big = nút to rộng hết khung. */
 .btn {
   border: 1px solid var(--line);
   background: var(--surface);

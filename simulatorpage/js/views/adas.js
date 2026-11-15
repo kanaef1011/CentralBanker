@@ -1,10 +1,15 @@
+// ĐỒ THỊ AD–AS (tổng cầu – tổng cung), vẽ theo tình hình THỰC TẾ hiện tại.
+// AD dốc xuống, SRAS dốc lên, LRAS thẳng đứng tại sản lượng tiềm năng. Điểm cắt AD–SRAS là điểm cân bằng.
+
 import { APP } from "../core/state.js";
 import { $, T, cur, fmt, fmtS, pct, qName } from "../core/utils.js";
 import { learnDialog } from "./learn.js";
 
 // ===== AD–AS GRAPH (actual state only; does not react to the draft decision) =====
+// Độ dốc minh hoạ của AD và SRAS (chỉ để vẽ cho dễ nhìn).
 export const S_AD = 1.0,
   S_AS = 0.5; // illustrative slopes
+// Chẩn đoán tình hình dựa vào vị trí điểm cân bằng so với LRAS và mục tiêu 2%.
 export function adasDiag(y, pi) {
   if (y > 0.5 && pi > 3)
     return "Demand too strong: output above potential (right of LRAS), inflation above target.";
@@ -21,6 +26,7 @@ export function adasDiag(y, pi) {
   if (pi < 1) return "Output near potential but inflation is low.";
   return "Close to ideal: equilibrium near LRAS and the 2% target.";
 }
+// Tính AD và SRAS đã dịch chuyển bao nhiêu so với quý trước, và nguyên nhân chính.
 export function adasShiftText(r, p) {
   const dAD = r.y - p.y + (r.pi - p.pi) / S_AD;
   const dAS = r.pi - p.pi - S_AS * (r.y - p.y);
@@ -88,6 +94,7 @@ export function adasShiftText(r, p) {
   } else s.push("SRAS barely moved.");
   return s.join(" ");
 }
+// Vẽ đồ thị: mỗi đường thẳng đi qua điểm cân bằng (y, lạm phát) với độ dốc cho sẵn.
 export function renderADAS() {
   const box = $("#adas");
   if (!box) return;
@@ -111,6 +118,7 @@ export function renderADAS() {
     hi = Math.max(5, ...pts.map((q) => q[1] + 2.5));
   lo = Math.floor(lo);
   hi = Math.ceil(hi);
+  // Đổi toạ độ kinh tế (output gap, lạm phát) thành toạ độ pixel trên hình.
   const X = (x) => m.l + ((x + R) / (2 * R)) * (W - m.l - m.r);
   const Y = (v) => m.t + ((hi - v) / (hi - lo)) * (H - m.t - m.b);
   const adLine = (q) => {

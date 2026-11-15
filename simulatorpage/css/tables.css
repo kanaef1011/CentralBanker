@@ -1,4 +1,7 @@
+/* BẢNG SỐ LIỆU */
+
 /* Tables */
+/* Bảng rộng hơn màn hình thì cho cuộn ngang, không làm tràn trang. */
 .tbl-wrap {
   overflow-x: auto;
 }

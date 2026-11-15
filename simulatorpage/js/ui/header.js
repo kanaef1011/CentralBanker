@@ -1,9 +1,12 @@
+// THANH TRÊN CÙNG VÀ CHUYỂN TAB
+
 import { N_Q, grade, scoreRun } from "../core/model.js";
 import { APP } from "../core/state.js";
 import { $, SC, T, cur } from "../core/utils.js";
 import { renderAll } from "../main.js";
 
 // ===== HEADER & TABS =====
+// Cập nhật thanh trên cùng: tên kịch bản, tiến độ các quý, uy tín, điểm hiện tại.
 export function renderHeader() {
   const t = T(),
     s = cur(),
@@ -22,6 +25,8 @@ export function renderHeader() {
     ? `${Math.round(sco.total)} pts · ${grade(sco.total)}`
     : "Not yet";
 }
+// Chuyển sang tab khác: đánh dấu nút đang chọn (aria-selected giúp trình đọc màn hình),
+// hiện đúng <section> rồi vẽ lại nội dung.
 export function setTab(tab) {
   APP.tab = tab;
   document

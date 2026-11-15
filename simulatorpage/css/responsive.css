@@ -1,3 +1,9 @@
+/*
+   RESPONSIVE: thay đổi bố cục theo độ rộng màn hình.
+   File này nạp SAU CÙNG để các quy tắc ở đây ghi đè lên các file trước.
+*/
+
+/* Màn hình vừa (≤ 1320px): cột giải thích bên phải chuyển xuống dưới. */
 @media (max-width: 1320px) {
   .play {
     grid-template-columns: 290px minmax(0, 1fr);
@@ -12,6 +18,7 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+/* Điện thoại / máy tính bảng (≤ 860px): mọi thứ xếp thành 1 cột. */
 @media (max-width: 860px) {
   .play,
   .brief-grid,
@@ -32,6 +39,7 @@
     padding: 10px 16px;
   }
 }
+/* Chỉ chạy hiệu ứng chuyển động khi người dùng KHÔNG bật chế độ giảm chuyển động. */
 @media (prefers-reduced-motion: no-preference) {
   .cred > span,
   .part .pb span,

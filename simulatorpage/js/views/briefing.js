@@ -1,3 +1,5 @@
+// TAB 1 – BRIEFING: chọn kịch bản, đọc tình hình đầu nhiệm kỳ và mục tiêu.
+
 import { N_Q, PI_TARGET, SCENARIOS } from "../core/model.js";
 import { APP, newRun } from "../core/state.js";
 import { $, SC, T, fmt, fmtS, pct } from "../core/utils.js";
@@ -12,6 +14,7 @@ export function renderBrief() {
     s0 = APP.run.H[0],
     t = T();
   const neutral = sc.rstar + PI_TARGET;
+  // Mỗi dòng của bảng: [tên chỉ số, giá trị, mốc so sánh, đánh giá].
   const startRows = [
     ["Inflation", pct(s0.pi), "Target 2%", stPi(s0.pi)],
     ["Unemployment", pct(s0.u), `Natural rate ${pct(sc.uStar)}`, stU(s0.u)],
@@ -54,6 +57,8 @@ export function renderBrief() {
       ["neu", s0.c >= 0.7 ? "High" : s0.c >= 0.5 ? "Medium" : "Low"],
     ],
   ];
+  // Dựng HTML bằng template literal (chuỗi nằm trong dấu `...`): ${...} dùng để chèn giá trị.
+  // Mẹo hay gặp: mang.map(x => `<tr>...</tr>`).join("") biến một mảng thành nhiều thẻ HTML.
   $("#v-brief").innerHTML = `<div class="brief-grid">
     <div class="stack">
       <h3>Choose a scenario</h3>
@@ -91,6 +96,8 @@ export function renderBrief() {
         </ul></div>
       </div>
     </div></div>`;
+  // Gắn sự kiện SAU khi đã chèn HTML (nút phải có trên trang rồi mới tìm được).
+  // Đổi kịch bản giữa chừng thì hỏi xác nhận trước.
   document.querySelectorAll(".sc").forEach(
     (b) =>
       (b.onclick = () => {

@@ -1,3 +1,5 @@
+// TAB 4 – COMPARE: lưu chiến lược và so sánh với quy tắc Taylor và "không làm gì" trên cùng bộ sốc.
+
 import { N_Q, grade, scoreRun } from '../core/model.js';
 import { APP, newRun, storeSaved } from '../core/state.js';
 import { $, CMP_COLORS, SC, T, cur, esc, fmt, pct, qShort } from '../core/utils.js';
@@ -6,6 +8,7 @@ import { setTab } from '../ui/header.js';
 import { benchmarks } from './evaluate.js';
 
 // ===== 4. COMPARE =====
+// Danh sách các đường để so sánh: ván hiện tại, 2 chiến lược mẫu và các chiến lược đã lưu.
 export function compareList() {
   const b = benchmarks();
   const list = [{ id: 'current', name: 'Current term' + (T() < N_Q ? ` (to ${qShort(T())})` : ''), H: APP.run.H, score: scoreRun(APP.run), kind: 'cur' },
@@ -14,6 +17,7 @@ export function compareList() {
   APP.saved.filter(s => s.key === APP.key).forEach(s => list.push({ id: s.id, name: s.name, H: s.H, score: s.score, kind: 'saved', diff: s.seed !== APP.run.seed || s.noise !== APP.run.noise, notes: s.notes }));
   return list.map((x, k) => ({ ...x, color: CMP_COLORS[k % CMP_COLORS.length] }));
 }
+// Vẽ tab So sánh: ô lưu, danh sách bật/tắt, 4 biểu đồ và bảng điểm.
 export function renderCompare() {
   const list = compareList(), vis = list.filter(x => !APP.hidden[x.id]);
   const canSave = T() > 0;
@@ -46,6 +50,7 @@ export function renderCompare() {
   drawChart($('#cI'), { title: 'Policy rate', floor0: true, series: vis.map(x => ({ name: x.name, data: series(x.H, 'i'), color: x.color, step: 1, w: x.kind === 'cur' ? 2.75 : 2, d: 2 })) });
   document.querySelectorAll('.cmp-item input').forEach(c => c.onchange = () => { APP.hidden[c.dataset.id] = !c.checked; renderCompare(); });
   document.querySelectorAll('[data-del]').forEach(b => b.onclick = e => { e.preventDefault(); APP.saved = APP.saved.filter(s => s.id !== b.dataset.del); storeSaved(); renderCompare(); });
+  // Chỉ lưu những trường cần để vẽ lại, cho gọn bộ nhớ localStorage.
   const save = () => {
     const nm = ($('#saveName').value || '').trim() || `Strategy ${APP.saved.filter(s => s.key === APP.key).length + 1}`;
     const H = APP.run.H.map(r => ({ t: r.t, pi: r.pi, u: r.u, y: r.y, g: r.g, i: r.i, B: r.B, qe: r.qe, fg: r.fg, c: r.c, di: r.di || 0, credit: r.credit }));

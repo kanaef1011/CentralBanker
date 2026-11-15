@@ -1,3 +1,5 @@
+// TAB 3 – EVALUATE: chấm điểm nhiệm kỳ, thống kê đánh đổi, nhật ký quyết định và bài giải trình.
+
 import {
   N_Q,
   SCENARIOS,
@@ -24,6 +26,7 @@ import { setTab } from "../ui/header.js";
 import { stPi } from "../ui/status.js";
 
 // ===== 3. EVALUATE =====
+// Bộ nhớ đệm (cache): chạy 2 chiến lược mẫu một lần rồi dùng lại, không phải tính lại mỗi lần vẽ.
 export const benchCache = {};
 export function benchmarks() {
   const k = `${APP.key}|${APP.run.seed}|${APP.run.noise}`;
@@ -47,6 +50,7 @@ export function benchmarks() {
   }
   return benchCache[k];
 }
+// Thống kê nhanh của một ván: số quý lạm phát trong 1–3%, thất nghiệp cao nhất, số lần thất hứa...
 export function runStats(run) {
   const sc = SCENARIOS[run.key],
     H = run.H,
@@ -74,6 +78,7 @@ export function runStats(run) {
     n: rows.length,
   };
 }
+// Vẽ tab Evaluate. Nếu chưa chơi quý nào thì hiện lời nhắc.
 export function renderEval() {
   const t = T(),
     sco = scoreRun(APP.run),
@@ -118,6 +123,7 @@ export function renderEval() {
       "15%",
     ],
   ];
+  // Tỷ lệ hy sinh: phải chịu bao nhiêu thất nghiệp (điểm-năm) để giảm được 1 điểm % lạm phát.
   const sacrifice =
     st.piDrop <= 0.3
       ? "—"
@@ -156,6 +162,8 @@ export function renderEval() {
   $("#notes").oninput = (e) => {
     APP.notes = e.target.value;
   };
+  // Sao chép báo cáo: navigator.clipboard ghi vào bộ nhớ tạm, await chờ cho xong.
+  // Trình duyệt có thể chặn, nên bọc trong try/catch.
   $("#btnCopy").onclick = async () => {
     const txt = reportText();
     const msg = $("#copyMsg");
@@ -168,6 +176,7 @@ export function renderEval() {
     }
   };
 }
+// Tạo báo cáo dạng chữ thuần (mỗi phần tử mảng là một dòng).
 export function reportText() {
   const sco = scoreRun(APP.run),
     sc = SC();

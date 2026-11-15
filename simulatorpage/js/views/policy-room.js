@@ -1,3 +1,7 @@
+// TAB 2 – PHÒNG CHÍNH SÁCH: nơi người chơi chọn công cụ và xem kết quả.
+// Gồm: cột công cụ (renderControls), thẻ chỉ số (renderKpis), dự báo (renderStaff),
+// 6 biểu đồ (renderCharts), phần "vì sao" (renderWhy) và cột bên phải (renderSide).
+
 import {
   FG_LEVELS,
   N_Q,
@@ -31,6 +35,7 @@ import { benchmarks } from "./evaluate.js";
 import { learnDialog } from "./learn.js";
 
 // ===== 2. POLICY ROOM =====
+// Dựng khung 3 cột, sau đó gọi các hàm con để vẽ từng phần.
 export function renderPlay() {
   const t = T(),
     done = t >= N_Q;
@@ -81,6 +86,7 @@ export function renderPlay() {
   if (done) setTimeout(() => endDialog(), 50);
 }
 
+// Cột công cụ: lãi suất, QE/QT, định hướng. done = hết nhiệm kỳ thì khoá các nút.
 export function renderControls() {
   const t = T(),
     s = cur(),
@@ -137,6 +143,7 @@ export function renderControls() {
     ${done ? '<p class="small muted">Your term is over.</p><button class="btn primary big" id="btnToEval">See your evaluation</button>' : ""}
     <div class="row"><button class="btn small" id="btnUndo" ${t === 0 ? "disabled" : ""}>↶ Go back 1 quarter</button><button class="btn small" id="btnReset">Restart scenario</button></div>`;
   if (!done) {
+    // Mỗi lần đổi công cụ: chỉ sửa APP.dec (quyết định nháp) rồi vẽ lại cột công cụ. Kinh tế CHƯA thay đổi.
     const setI = (v) => {
       APP.dec.i = Math.max(0, Math.min(12, Math.round(v * 4) / 4));
       refreshDraft();
@@ -196,6 +203,8 @@ export function refreshDraft() {
   }
 }
 
+// Bấm "Announce decision": lưu lại dự báo không-có-sốc (để sau so sánh với thực tế),
+// chạy mô hình thêm 1 quý, rồi vẽ lại toàn bộ.
 export function commit() {
   const fc1 = forecast(APP.run, APP.dec, 1)[0];
   const row = stepRun(APP.run, APP.dec);
@@ -207,6 +216,7 @@ export function commit() {
     w.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+// Bảng dự báo của chuyên viên: kinh tế sẽ đi về đâu NẾU giữ nguyên chính sách.
 export function renderStaff() {
   const box = $("#staff");
   if (!box) return;
@@ -237,11 +247,13 @@ export function renderStaff() {
     </tbody></table></div>
     <p class="small muted">This forecast does not change when you adjust the tools: it only shows where the economy is heading if you do nothing new. It cannot see future events or surprises; the shaded bands on the charts show how uncertain it becomes further out.</p>`;
 }
+// Người chơi đã từng đổi lãi suất hoặc QE/QT chưa?
 export function H_changed() {
   return APP.run.H.slice(1).some(
     (r) => Math.abs(r.di) > 0.01 || Math.abs(r.qe) > 0.01,
   );
 }
+// Một thẻ chỉ số: tên, giá trị, nhãn đánh giá và thay đổi so với quý trước.
 export function kpiTile(lbl, val, st, ref, delta) {
   return `<div class="kpi ${st[0]}"><div class="row" style="justify-content:space-between;gap:6px"><span class="lbl">${lbl}</span><span class="pill ${st[0] === "neu" ? "" : st[0]}">${st[1]}</span></div>
   <div class="val">${val}</div><div class="meta"><span>${ref}</span><span>${delta}</span></div></div>`;
@@ -283,6 +295,7 @@ export function renderKpis() {
       dl("lend"),
     );
 }
+// Tạo dữ liệu dự báo kèm dải bất định rộng dần theo thời gian (càng xa càng khó đoán).
 export function fcArr(H, fc, k, spread) {
   const mid = new Array(N_Q + 1).fill(null),
     lo = mid.slice(),
@@ -297,6 +310,7 @@ export function fcArr(H, fc, k, spread) {
   });
   return { mid, lo, hi };
 }
+// Vẽ 6 biểu đồ của phòng chính sách. Đường nét đứt + vùng mờ = dự báo.
 export function renderCharts() {
   if (APP.tab !== "play") return;
   const H = APP.run.H,
@@ -448,6 +462,7 @@ export function renderCharts() {
   });
 }
 
+// Thanh đóng góp: giá trị dương vẽ sang phải từ vạch giữa, giá trị âm vẽ sang trái.
 export function contribRows(items, scale) {
   const mx = Math.max(scale, ...items.map((x) => Math.abs(x[1])));
   return `<div class="contrib">${items
@@ -457,6 +472,7 @@ export function contribRows(items, scale) {
     })
     .join("")}</div>`;
 }
+// Giải thích vì sao kinh tế thay đổi trong quý vừa qua.
 export function renderWhy() {
   const t = T(),
     box = $("#whyBox");
@@ -498,6 +514,8 @@ export function renderWhy() {
       )}</div>
     </div>`;
 }
+// Tạo các đoạn giải thích theo chuỗi truyền dẫn:
+// Chính sách → Thị trường → Tín dụng → Cầu → Việc làm → Lạm phát → Bất định.
 export function explainRow(r, p) {
   const out = [];
   // Policy
@@ -608,6 +626,8 @@ export function explainRow(r, p) {
   return out;
 }
 
+// Câu hỏi suy ngẫm cho học sinh: kiểm tra lần lượt từng tình huống,
+// gặp điều kiện đúng đầu tiên thì trả về câu hỏi tương ứng.
 export function reflectQ() {
   const t = T(),
     H = APP.run.H,
@@ -641,6 +661,7 @@ export function reflectQ() {
     return "The indicators are close to target. If you hold rates steady, what does the staff forecast say will happen over the next 4 quarters? Do you agree?";
   return "If you were a family paying off a mortgage, how would this quarter's decision affect you? What about a saver?";
 }
+// Cột bên phải: chuỗi truyền dẫn chính sách, câu hỏi suy ngẫm và tin tức kinh tế.
 export function renderSide() {
   const t = T(),
     H = APP.run.H,
@@ -682,6 +703,7 @@ export function renderSide() {
     <div class="panel stack"><h3>Economic news</h3><div class="news">${news.length ? news.map((r) => `<div class="ni ${r.event.kind}"><div class="q">${qName(r.t)}</div><b>${esc(r.event.title)}</b><br><span class="muted">${esc(r.event.text)}</span></div>`).join("") : '<p class="small muted">No major events yet. News will appear when an outside shock hits.</p>'}</div></div>`;
 }
 
+// Hộp thoại khi hết nhiệm kỳ (mỗi ván chỉ hiện một lần).
 export function endDialog() {
   if (APP.endShown === APP.run) return;
   APP.endShown = APP.run;
