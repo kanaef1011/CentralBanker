@@ -1,0 +1,134 @@
+/* Layout: central bank policy room — tools column | data dashboard | cause-and-effect column */
+:root {
+  --bg: #eef1ee;
+  --surface: #ffffff;
+  --surface-2: #f6f8f6;
+  --ink: #14201c;
+  --muted: #5b6a63;
+  --line: #d6ddd8;
+  --accent: #0e6a54;
+  --accent-ink: #ffffff;
+  --brass: #a87a26;
+  --good: #2c8148;
+  --warn: #b8730c;
+  --bad: #bf3d2a;
+  --good-bg: #e3f1e7;
+  --warn-bg: #fbefd9;
+  --bad-bg: #f8e3df;
+  --s-pi: #bf3d2a;
+  --s-u: #2b5c9c;
+  --s-g: #0e6a54;
+  --s-rate: #14201c;
+  --s-L: #2b5c9c;
+  --s-lend: #a87a26;
+  --f-display: "Fraunces", "Georgia", "Times New Roman", serif;
+  --f-body:
+    "Be Vietnam Pro", "Segoe UI", system-ui, -apple-system, "Helvetica Neue",
+    Arial, sans-serif;
+  --r: 10px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1311;
+    --surface: #151e1b;
+    --surface-2: #1b2622;
+    --ink: #e4ebe7;
+    --muted: #95a59d;
+    --line: #2a3732;
+    --accent: #3cb08c;
+    --accent-ink: #06150f;
+    --brass: #d3a54e;
+    --good: #5cc07c;
+    --warn: #e3a23c;
+    --bad: #ef7a63;
+    --good-bg: #173023;
+    --warn-bg: #352812;
+    --bad-bg: #3a1d18;
+    --s-pi: #ef7a63;
+    --s-u: #79a6e6;
+    --s-g: #3cb08c;
+    --s-rate: #e4ebe7;
+    --s-L: #79a6e6;
+    --s-lend: #d3a54e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1311;
+  --surface: #151e1b;
+  --surface-2: #1b2622;
+  --ink: #e4ebe7;
+  --muted: #95a59d;
+  --line: #2a3732;
+  --accent: #3cb08c;
+  --accent-ink: #06150f;
+  --brass: #d3a54e;
+  --good: #5cc07c;
+  --warn: #e3a23c;
+  --bad: #ef7a63;
+  --good-bg: #173023;
+  --warn-bg: #352812;
+  --bad-bg: #3a1d18;
+  --s-pi: #ef7a63;
+  --s-u: #79a6e6;
+  --s-g: #3cb08c;
+  --s-rate: #e4ebe7;
+  --s-L: #79a6e6;
+  --s-lend: #d3a54e;
+  color-scheme: dark;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.5 var(--f-body);
+  font-variant-numeric: tabular-nums;
+}
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  margin: 0;
+}
+h2 {
+  font: 650 22px/1.25 var(--f-display);
+}
+h3 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+p {
+  margin: 0;
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+b,
+strong {
+  font-weight: 600;
+}
+.muted {
+  color: var(--muted);
+}
+.small {
+  font-size: 12.5px;
+}

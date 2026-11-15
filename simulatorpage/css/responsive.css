@@ -1,0 +1,41 @@
+@media (max-width: 1320px) {
+  .play {
+    grid-template-columns: 290px minmax(0, 1fr);
+  }
+  .play .side {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
+  .kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 860px) {
+  .play,
+  .brief-grid,
+  .eval-top,
+  .two {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .part {
+    grid-template-columns: 120px minmax(0, 1fr) 40px;
+  }
+  main {
+    padding: 12px 16px 32px;
+  }
+  .top {
+    padding: 10px 16px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cred > span,
+  .part .pb span,
+  .bsbar span {
+    transition: width 0.3s ease;
+  }
+}

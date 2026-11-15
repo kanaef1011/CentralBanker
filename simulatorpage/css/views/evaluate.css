@@ -1,0 +1,90 @@
+/* Evaluate */
+.eval-top {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 16px;
+}
+.gradebox {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: 4px;
+}
+.grade {
+  font: 650 64px/1 var(--f-display);
+  color: var(--accent);
+}
+.score {
+  font-size: 15px;
+  font-weight: 600;
+}
+.parts {
+  display: grid;
+  gap: 10px;
+}
+.part {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr) 44px;
+  gap: 10px;
+  align-items: center;
+}
+.part .pb {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.part .pb span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.part .pd {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: -6px;
+}
+.insights {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.ins {
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.ins .k {
+  font-size: 12px;
+  color: var(--muted);
+}
+.ins .v {
+  font-size: 20px;
+  font-weight: 600;
+}
+.ins .d {
+  font-size: 12px;
+  color: var(--muted);
+}
+textarea {
+  width: 100%;
+  min-height: 120px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  resize: vertical;
+}
+input[type="text"] {
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 7px 10px;
+  min-width: 0;
+}

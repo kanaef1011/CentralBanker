@@ -1,0 +1,31 @@
+/* Tables */
+.tbl-wrap {
+  overflow-x: auto;
+}
+table.tbl {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+.tbl th,
+.tbl td {
+  padding: 7px 9px;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+  white-space: nowrap;
+}
+.tbl th:first-child,
+.tbl td:first-child {
+  text-align: left;
+}
+.tbl th {
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 12px;
+  background: var(--surface-2);
+}
+.tbl td.l {
+  text-align: left;
+  white-space: normal;
+  min-width: 160px;
+}

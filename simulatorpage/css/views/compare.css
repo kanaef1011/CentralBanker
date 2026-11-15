@@ -1,0 +1,26 @@
+/* Compare */
+.cmp-list {
+  display: grid;
+  gap: 6px;
+}
+.cmp-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+.cmp-item .sw {
+  width: 14px;
+  height: 4px;
+  border-radius: 2px;
+  flex: none;
+}
+.cmp-item .x {
+  margin-left: auto;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 12px;
+  text-decoration: underline;
+}

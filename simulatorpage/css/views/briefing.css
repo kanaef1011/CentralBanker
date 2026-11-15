@@ -1,0 +1,54 @@
+/* Briefing */
+.brief-grid {
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 16px;
+}
+.sc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sc {
+  text-align: left;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  display: grid;
+  gap: 2px;
+}
+.sc .nm {
+  font-weight: 600;
+  font-size: 15px;
+}
+.sc .tg {
+  color: var(--muted);
+  font-size: 12.5px;
+}
+.sc[aria-pressed="true"] {
+  border-color: var(--accent);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.brief-text {
+  max-width: 68ch;
+  font-size: 15px;
+}
+.challenge {
+  border-left: 3px solid var(--brass);
+  padding: 6px 12px;
+  background: var(--surface-2);
+  border-radius: 0 8px 8px 0;
+  max-width: 68ch;
+}
+.two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+ul.clean {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+}

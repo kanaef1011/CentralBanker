@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Central Bank Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,650&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/views/briefing.css" />
+    <link rel="stylesheet" href="css/tables.css" />
+    <link rel="stylesheet" href="css/views/policy-room.css" />
+    <link rel="stylesheet" href="css/views/evaluate.css" />
+    <link rel="stylesheet" href="css/views/compare.css" />
+    <link rel="stylesheet" href="css/views/learn.css" />
+    <link rel="stylesheet" href="css/dialogs.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="brand">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+          <rect
+            x="1"
+            y="1"
+            width="32"
+            height="32"
+            rx="8"
+            fill="var(--accent)"
+          />
+          <path
+            d="M7 13 17 7l10 6zM9 15h3v9H9zm6.5 0h3v9h-3zM22 15h3v9h-3zM7 26h20v2H7z"
+            fill="var(--accent-ink)"
+          />
+        </svg>
+        <div>
+          <h1>Central Bank Simulator</h1>
+          <div class="sub">
+            You are the Governor. Each turn is one quarter; your term lasts 3
+            years.
+          </div>
+        </div>
+      </div>
+      <div class="hstat">
+        <span class="k">Scenario</span><span class="v" id="hScen"></span>
+      </div>
+      <div class="hstat">
+        <span class="k" id="hQlabel"></span
+        ><span class="qbar" id="hQbar"></span>
+      </div>
+      <div class="hstat">
+        <span class="k">Credibility</span
+        ><span class="row" style="gap: 8px"
+          ><span class="cred"><span id="hCred"></span></span
+          ><span class="v" id="hCredV"></span
+        ></span>
+      </div>
+      <div class="hstat">
+        <span class="k">Running score</span><span class="v" id="hScore"></span>
+      </div>
+    </header>
+    <nav class="tabs" role="tablist" aria-label="Stages">
+      <button role="tab" data-tab="brief" id="tab-brief">
+        <span class="n">1</span>Briefing
+      </button>
+      <button role="tab" data-tab="play" id="tab-play">
+        <span class="n">2</span>Set policy &amp; observe
+      </button>
+      <button role="tab" data-tab="eval" id="tab-eval">
+        <span class="n">3</span>Evaluate
+      </button>
+      <button role="tab" data-tab="compare" id="tab-compare">
+        <span class="n">4</span>Compare strategies
+      </button>
+      <button role="tab" data-tab="learn" id="tab-learn">
+        <span class="n">?</span>Learn &amp; model
+      </button>
+    </nav>
+    <main>
+      <section class="view" id="v-brief"></section>
+      <section class="view" id="v-play"></section>
+      <section class="view" id="v-eval"></section>
+      <section class="view" id="v-compare"></section>
+      <section class="view" id="v-learn"></section>
+    </main>
+    <div class="overlay" id="ov">
+      <div class="dialog" role="dialog" aria-modal="true" id="dlg"></div>
+    </div>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

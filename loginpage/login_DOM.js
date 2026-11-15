@@ -60,6 +60,9 @@ function handleAuthSubmit() {
   }, 1400);
 }
 
+// login.html gọi hàm này từ onsubmit, nên module phải gắn nó lên window
+window.handleAuthSubmit = handleAuthSubmit;
+
 let emailInput = document.querySelector("#emailinput");
 let passwordInput = document.querySelector("#passwordinput");
 let submitBtn = document.querySelector("#submitBtn");

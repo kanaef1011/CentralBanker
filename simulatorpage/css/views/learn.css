@@ -1,0 +1,31 @@
+/* Learn */
+.learn {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+.learn .panel {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+.learn dl {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+.learn dt {
+  font-weight: 600;
+  font-size: 12.5px;
+  color: var(--accent);
+}
+.learn dd {
+  margin: 0;
+  font-size: 13.5px;
+}
+.eq {
+  font-size: 13px;
+  background: var(--surface-2);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
