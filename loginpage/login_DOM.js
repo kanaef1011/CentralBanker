@@ -1,6 +1,7 @@
 import app from "../config.js";
 import {
   getAuth,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   RecaptchaVerifier,
@@ -13,9 +14,12 @@ const toggleBtn = document.getElementById("togglePasswordBtn");
 const pwdInput = document.getElementById("passwordInput");
 const pwdIcon = document.getElementById("pwdToggleIcon");
 
-if (localStorage.getItem("email")) {
-  window.location.href = "/simulatorpage/simulator.html";
-}
+// Đã đăng nhập Firebase rồi thì vào thẳng game.
+// (Trước đây kiểm tra localStorage "email"; nếu phiên Firebase đã hết mà email vẫn còn,
+// trang game đá về login, login lại đá sang game → lặp vô tận.)
+onAuthStateChanged(auth, (user) => {
+  if (user) window.location.href = "/simulatorpage/simulator.html";
+});
 
 if (toggleBtn && pwdInput && pwdIcon) {
   toggleBtn.addEventListener("click", function () {

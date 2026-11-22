@@ -1,0 +1,13 @@
+rules_version = '2';
+
+// Quy tắc bảo mật Firestore: dán nội dung file này vào
+// Firebase Console → Firestore Database → Rules → Publish.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Mỗi người chỉ được đọc/ghi chiến lược của chính mình (uid khớp tài khoản đang đăng nhập).
+    match /users/{uid}/strategies/{strategyId} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+    // Mọi đường dẫn khác: chặn hết.
+  }
+}

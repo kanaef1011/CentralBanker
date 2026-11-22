@@ -5,10 +5,11 @@ import { APP, loadSaved, newRun } from "./core/state.js";
 import { renderHeader, setTab } from "./ui/header.js";
 import { renderADAS } from "./views/adas.js";
 import { renderBrief } from "./views/briefing.js";
-import { renderCompare } from "./views/compare.js";
+import { askAboutOldStrategies, renderCompare } from "./views/compare.js";
 import { renderEval } from "./views/evaluate.js";
 import { renderLearn } from "./views/learn.js";
 import { renderCharts, renderPlay } from "./views/policy-room.js";
+import { logout } from "./services/strategies.js";
 
 // ===== STARTUP =====
 // Vẽ lại thanh trên cùng và tab đang mở. Gọi hàm này mỗi khi dữ liệu trong APP thay đổi.
@@ -37,9 +38,14 @@ window.addEventListener("resize", () => {
     if (APP.tab === "compare") renderCompare();
   }, 120);
 });
-// KHỞI ĐỘNG: đọc dữ liệu đã lưu → tạo ván đầu tiên → mở tab.
+// KHỞI ĐỘNG: tạo ván đầu tiên → mở tab → tải chiến lược đã lưu từ Firestore.
 // Có thể mở thẳng một tab bằng #hash trên địa chỉ, ví dụ simulator.html#play.
-loadSaved();
+// Tải từ Firestore mất một lúc, nên game hiện ra trước; tải xong thì vẽ lại tab So sánh nếu đang mở.
+// Sau đó, nếu trình duyệt còn chiến lược cũ (lưu trước khi có tài khoản) thì hỏi người dùng.
+loadSaved().then(() => {
+  if (APP.tab === "compare") renderCompare();
+  askAboutOldStrategies();
+});
 newRun("lam-phat");
 export let startTab = "brief";
 if (
@@ -49,7 +55,9 @@ if (
   startTab = location.hash.slice(1);
 setTab(startTab);
 
-document.getElementById("logoutBtn").addEventListener("click", function () {
+document.getElementById("logoutBtn").addEventListener("click", async function () {
+  // Đăng xuất khỏi Firebase (nếu không, lần sau vẫn được coi là đã đăng nhập)
+  await logout();
   // Xóa email khỏi localStorage
   localStorage.removeItem("email");
   // Chuyển hướng về trang đăng nhập

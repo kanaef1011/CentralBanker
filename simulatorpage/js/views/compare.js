@@ -1,11 +1,49 @@
 // TAB 4 – COMPARE: lưu chiến lược và so sánh với quy tắc Taylor và "không làm gì" trên cùng bộ sốc.
 
 import { N_Q, grade, scoreRun } from '../core/model.js';
-import { APP, newRun, storeSaved } from '../core/state.js';
+import { APP, addSaved, discardOldLocalStrategies, importOldLocalStrategies, newRun, oldLocalStrategies, removeSaved } from '../core/state.js';
+import { SCENARIOS } from '../core/model.js';
+import { closeDialog, openDialog } from '../ui/dialogs.js';
 import { $, CMP_COLORS, SC, T, cur, esc, fmt, pct, qShort } from '../core/utils.js';
 import { chartBox, drawChart, series } from '../ui/charts.js';
 import { setTab } from '../ui/header.js';
 import { benchmarks } from './evaluate.js';
+
+// Hỏi người dùng muốn làm gì với các chiến lược cũ còn trên trình duyệt này.
+// Gọi sau khi đã đăng nhập và tải xong danh sách từ Firestore (xem main.js).
+export function askAboutOldStrategies() {
+  const old = oldLocalStrategies();
+  if (!old.length || APP.savedStatus !== 'ready') return;
+  const names = old.slice(0, 5).map(s => `<li>${esc(s.name)} <span class="muted">· ${esc(SCENARIOS[s.key] ? SCENARIOS[s.key].name : s.key)}</span></li>`).join('');
+  openDialog(`<h2>Strategies found on this browser</h2>
+    <p>This browser has ${old.length} saved ${old.length === 1 ? 'strategy' : 'strategies'} from before accounts were added. ${old.length === 1 ? 'It is' : 'They are'} not linked to any account yet.</p>
+    <ul class="clean small">${names}${old.length > 5 ? `<li class="muted">…and ${old.length - 5} more</li>` : ''}</ul>
+    <p class="small muted">On a shared computer, these may belong to someone else. Choose "Decide later" if you're not sure.</p>
+    <div class="row">
+      <button class="btn primary" id="oldAdd">Add to my account${APP.user && APP.user.email ? ` (${esc(APP.user.email)})` : ''}</button>
+      <button class="btn" id="oldLater">Decide later</button>
+      <button class="btn" id="oldDel" style="color:var(--bad)">Delete them</button>
+    </div>
+    <p class="small" id="oldMsg" style="color:var(--bad)"></p>`);
+  // Để sau: chỉ đóng hộp thoại, dữ liệu vẫn nằm trên máy và lần sau sẽ hỏi lại.
+  // (Bấm ra ngoài hoặc nhấn Esc cũng có tác dụng như "Để sau".)
+  $('#oldLater').onclick = closeDialog;
+  $('#oldDel').onclick = () => { discardOldLocalStrategies(); closeDialog(); };
+  $('#oldAdd').onclick = async () => {
+    document.querySelectorAll('#dlg button').forEach(b => b.disabled = true);
+    $('#oldAdd').textContent = 'Saving…';
+    try {
+      await importOldLocalStrategies(old);
+      closeDialog();
+      if (APP.tab === 'compare') renderCompare();
+    } catch (e) {
+      console.error('Could not import old strategies:', e);
+      $('#oldMsg').textContent = `Could not save to your account (${e.code || e.message}). Please try again.`;
+      document.querySelectorAll('#dlg button').forEach(b => b.disabled = false);
+      $('#oldAdd').textContent = 'Try again';
+    }
+  };
+}
 
 // ===== 4. COMPARE =====
 // Danh sách các đường để so sánh: ván hiện tại, 2 chiến lược mẫu và các chiến lược đã lưu.
@@ -28,7 +66,10 @@ export function renderCompare() {
         <div class="row"><input type="text" id="saveName" placeholder="e.g. Hike hard early" value="" style="flex:1" ${canSave ? '' : 'disabled'}><button class="btn primary" id="btnSave" ${canSave ? '' : 'disabled'}>Save</button><button class="btn" id="btnSaveReset" ${canSave ? '' : 'disabled'}>Save & restart</button></div>
         ${canSave ? '' : '<p class="small muted">Set policy for at least one quarter before saving.</p>'}
       </div>
-      <div class="panel stack"><h3>Strategies to show · ${SC().name}</h3><div class="cmp-list">
+      <div class="panel stack"><h3>Strategies to show · ${SC().name}</h3>
+        ${APP.savedStatus === 'loading' ? '<p class="small muted">Loading your saved strategies…</p>' : ''}
+        ${APP.savedStatus === 'error' ? '<p class="small" style="color:var(--bad)">Could not load your saved strategies. Check your connection and reload the page.</p>' : ''}
+        <div class="cmp-list">
         ${list.map(x => `<label class="cmp-item" for="cb-${x.id}"><input type="checkbox" id="cb-${x.id}" data-id="${x.id}" ${APP.hidden[x.id] ? '' : 'checked'}><span class="sw" style="background:${x.color}"></span><span>${esc(x.name)}${x.diff ? ' <span class="pill warn">different shock set</span>' : ''}</span>${x.kind === 'saved' ? `<button class="x" data-del="${x.id}">Delete</button>` : ''}</label>`).join('')}
       </div></div>
     </div>
@@ -49,13 +90,18 @@ export function renderCompare() {
   drawChart($('#cY'), { title: 'Demand', zero: true, series: ser('y') });
   drawChart($('#cI'), { title: 'Policy rate', floor0: true, series: vis.map(x => ({ name: x.name, data: series(x.H, 'i'), color: x.color, step: 1, w: x.kind === 'cur' ? 2.75 : 2, d: 2 })) });
   document.querySelectorAll('.cmp-item input').forEach(c => c.onchange = () => { APP.hidden[c.dataset.id] = !c.checked; renderCompare(); });
-  document.querySelectorAll('[data-del]').forEach(b => b.onclick = e => { e.preventDefault(); APP.saved = APP.saved.filter(s => s.id !== b.dataset.del); storeSaved(); renderCompare(); });
-  // Chỉ lưu những trường cần để vẽ lại, cho gọn bộ nhớ localStorage.
+  // Lưu/xoá trên Firestore cần thời gian; nếu thất bại thì báo lỗi và vẽ lại danh sách cho đúng.
+  const cloudFail = action => e => {
+    console.error(`Could not ${action} strategy:`, e);
+    alert(`Could not ${action} the strategy (${e.code || e.message}).`);
+    if (APP.tab === 'compare') renderCompare();
+  };
+  document.querySelectorAll('[data-del]').forEach(b => b.onclick = e => { e.preventDefault(); removeSaved(b.dataset.del).catch(cloudFail('delete')); renderCompare(); });
+  // Chỉ lưu những trường cần để vẽ lại, cho gọn dữ liệu trên Firestore.
   const save = () => {
     const nm = ($('#saveName').value || '').trim() || `Strategy ${APP.saved.filter(s => s.key === APP.key).length + 1}`;
     const H = APP.run.H.map(r => ({ t: r.t, pi: r.pi, u: r.u, y: r.y, g: r.g, i: r.i, B: r.B, qe: r.qe, fg: r.fg, c: r.c, di: r.di || 0, credit: r.credit }));
-    APP.saved.push({ id: 's' + Date.now(), name: nm, key: APP.key, seed: APP.run.seed, noise: APP.run.noise, H, score: scoreRun(APP.run), notes: APP.notes });
-    storeSaved();
+    addSaved({ id: 's' + Date.now(), name: nm, key: APP.key, seed: APP.run.seed, noise: APP.run.noise, H, score: scoreRun(APP.run), notes: APP.notes || '' }).catch(cloudFail('save'));
   };
   if (canSave) {
     $('#btnSave').onclick = () => { save(); renderCompare(); };
