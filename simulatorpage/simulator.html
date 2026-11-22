@@ -11,6 +11,19 @@
       href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,650&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
     <!--
        CSS được chia theo từng phần. Thứ tự quan trọng:
        base.css (biến màu) phải nạp trước, responsive.css nạp sau cùng để ghi đè.
@@ -25,15 +38,198 @@
     <link rel="stylesheet" href="css/views/learn.css" />
     <link rel="stylesheet" href="css/dialogs.css" />
     <link rel="stylesheet" href="css/responsive.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-container": "#b3b1ff",
+              "primary-container": "#8083ff",
+              "on-secondary-fixed-variant": "#3323cc",
+              surface: "#0b1326",
+              "tertiary-fixed-dim": "#b8c4ff",
+              "surface-bright": "#31394d",
+              "on-primary": "#1000a9",
+              "on-surface": "#dae2fd",
+              "on-surface-variant": "#c7c4d7",
+              "surface-variant": "#2d3449",
+              "inverse-primary": "#494bd6",
+              "surface-container-low": "#131b2e",
+              primary: "#c0c1ff",
+              secondary: "#c3c0ff",
+              outline: "#908fa0",
+              "surface-container-lowest": "#060e20",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "secondary-container": "#3626ce",
+              "surface-container": "#171f33",
+              "error-container": "#93000a",
+              "on-tertiary-fixed": "#001354",
+              "on-error-container": "#ffdad6",
+              "surface-container-high": "#222a3d",
+              "on-background": "#dae2fd",
+              "surface-tint": "#c0c1ff",
+              "inverse-on-surface": "#283044",
+              "surface-dim": "#0b1326",
+              "surface-container-highest": "#2d3449",
+              "on-primary-container": "#0d0096",
+              "secondary-fixed-dim": "#c3c0ff",
+              "secondary-fixed": "#e2dfff",
+              "primary-fixed": "#e1e0ff",
+              tertiary: "#b8c4ff",
+              "on-secondary-fixed": "#0f0069",
+              "tertiary-container": "#6473b6",
+              "outline-variant": "#464554",
+              "on-tertiary-fixed-variant": "#334282",
+              "on-tertiary": "#1a2b6a",
+              "inverse-surface": "#dae2fd",
+              "on-tertiary-container": "#00031d",
+              background: "#0b1326",
+              "on-secondary": "#1d00a5",
+              "on-primary-fixed": "#07006c",
+              "on-error": "#690005",
+              "tertiary-fixed": "#dde1ff",
+              error: "#ffb4ab",
+              "primary-fixed-dim": "#c0c1ff",
+            },
+            borderRadius: {
+              DEFAULT: "1rem",
+              lg: "2rem",
+              xl: "3rem",
+              full: "9999px",
+            },
+            spacing: {
+              "space-lg": "1.5rem",
+              "space-sm": "0.5rem",
+              gutter: "1rem",
+              margin: "1.25rem",
+              "space-xl": "2rem",
+              "space-xs": "0.25rem",
+              "space-md": "1rem",
+            },
+            fontFamily: {
+              "label-md": ["Inter"],
+              "headline-lg": ["Plus Jakarta Sans"],
+              "headline-xl": ["Plus Jakarta Sans"],
+              "code-otp": ["Inter"],
+              "label-sm": ["Inter"],
+              "body-sm": ["Inter"],
+              "body-md": ["Inter"],
+              "headline-md": ["Plus Jakarta Sans"],
+              "label-lg": ["Inter"],
+              "headline-xl-mobile": ["Plus Jakarta Sans"],
+              "headline-lg-mobile": ["Plus Jakarta Sans"],
+              "body-lg": ["Inter"],
+            },
+            fontSize: {
+              "label-md": [
+                "13px",
+                {
+                  lineHeight: "18px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "500",
+                },
+              ],
+              "headline-lg": [
+                "32px",
+                {
+                  lineHeight: "40px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-xl": [
+                "40px",
+                {
+                  lineHeight: "48px",
+                  letterSpacing: "-0.03em",
+                  fontWeight: "700",
+                },
+              ],
+              "code-otp": [
+                "24px",
+                {
+                  lineHeight: "32px",
+                  letterSpacing: "0.15em",
+                  fontWeight: "600",
+                },
+              ],
+              "label-sm": [
+                "11px",
+                {
+                  lineHeight: "14px",
+                  letterSpacing: "0.04em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-sm": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.01em",
+                  fontWeight: "400",
+                },
+              ],
+              "body-md": [
+                "14px",
+                { lineHeight: "20px", letterSpacing: "0em", fontWeight: "400" },
+              ],
+              "headline-md": [
+                "20px",
+                {
+                  lineHeight: "28px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "label-lg": [
+                "15px",
+                {
+                  lineHeight: "20px",
+                  letterSpacing: "0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-xl-mobile": [
+                "30px",
+                {
+                  lineHeight: "38px",
+                  letterSpacing: "-0.025em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-lg-mobile": [
+                "24px",
+                {
+                  lineHeight: "32px",
+                  letterSpacing: "-0.015em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-lg": [
+                "16px",
+                {
+                  lineHeight: "24px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "400",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
   </head>
   <body>
     <!-- Thanh trên cùng. Các thẻ có id (hScen, hQbar...) để trống, JavaScript sẽ điền nội dung. -->
     <header class="top">
       <div class="brand">
         <div
-          class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-container to-secondary-container flex items-center justify-center shadow-[0_0_15px_rgba(128,131,255,0.35)]"
+          class="w-8 h-8 rounded-lg bg-primary-container/20 border border-primary/40 flex items-center justify-center shadow-[0_0_16px_rgba(99,102,241,0.45)]"
         >
-          <span class="material-symbols-outlined text-on-primary text-[22px]"
+          <span class="material-symbols-outlined text-primary text-[20px]"
             >account_balance</span
           >
         </div>
