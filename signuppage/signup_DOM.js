@@ -128,6 +128,8 @@ form.addEventListener("submit", async function (e) {
 
   console.log(username, email, password);
 
+  localStorage.setItem("email", JSON.stringify(email));
+
   try {
     await createUserWithEmailAndPassword(auth, email, password);
   } catch (error) {

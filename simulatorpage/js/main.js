@@ -48,3 +48,10 @@ if (
 )
   startTab = location.hash.slice(1);
 setTab(startTab);
+
+document.getElementById("logoutBtn").addEventListener("click", function () {
+  // Xóa email khỏi localStorage
+  localStorage.removeItem("email");
+  // Chuyển hướng về trang đăng nhập
+  window.location.href = "/loginpage/login.html";
+});

@@ -1,7 +1,21 @@
+import app from "../config.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  RecaptchaVerifier,
+} from "firebase/auth";
+
+const auth = getAuth(app);
+
 // Password visibility toggle
 const toggleBtn = document.getElementById("togglePasswordBtn");
-const pwdInput = document.getElementById("passwordField");
+const pwdInput = document.getElementById("passwordInput");
 const pwdIcon = document.getElementById("pwdToggleIcon");
+
+if (localStorage.getItem("email")) {
+  window.location.href = "/simulatorpage/simulator.html";
+}
 
 if (toggleBtn && pwdInput && pwdIcon) {
   toggleBtn.addEventListener("click", function () {
@@ -63,11 +77,26 @@ function handleAuthSubmit() {
 // login.html gọi hàm này từ onsubmit, nên module phải gắn nó lên window
 window.handleAuthSubmit = handleAuthSubmit;
 
-let emailInput = document.querySelector("#emailinput");
-let passwordInput = document.querySelector("#passwordinput");
+let emailInput = document.querySelector("#emailInput");
+let passwordInput = document.querySelector("#passwordInput");
 let submitBtn = document.querySelector("#submitBtn");
+let loginForm = document.querySelector("#loginForm");
 
-submitBtn.addEventListener("click", function (event) {
-  console.log(emailInput.value);
-  console.log(passwordInput.value);
+const errorMessageDiv = document.getElementById("errorMessage");
+
+loginForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
+  try {
+    await signInWithEmailAndPassword(
+      auth,
+      emailInput.value,
+      passwordInput.value,
+    );
+    localStorage.setItem("email", JSON.stringify(emailInput.value));
+    window.location.href = "/simulatorpage/simulator.html";
+  } catch (error) {
+    console.error("Error signing in with email and password:", error);
+    errorMessageDiv.textContent =
+      "Invalid email or password. Please try again.";
+  }
 });

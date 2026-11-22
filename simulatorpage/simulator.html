@@ -30,20 +30,13 @@
     <!-- Thanh trên cùng. Các thẻ có id (hScen, hQbar...) để trống, JavaScript sẽ điền nội dung. -->
     <header class="top">
       <div class="brand">
-        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
-          <rect
-            x="1"
-            y="1"
-            width="32"
-            height="32"
-            rx="8"
-            fill="var(--accent)"
-          />
-          <path
-            d="M7 13 17 7l10 6zM9 15h3v9H9zm6.5 0h3v9h-3zM22 15h3v9h-3zM7 26h20v2H7z"
-            fill="var(--accent-ink)"
-          />
-        </svg>
+        <div
+          class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-container to-secondary-container flex items-center justify-center shadow-[0_0_15px_rgba(128,131,255,0.35)]"
+        >
+          <span class="material-symbols-outlined text-on-primary text-[22px]"
+            >account_balance</span
+          >
+        </div>
         <div>
           <h1>Central Bank Simulator</h1>
           <div class="sub">
@@ -68,6 +61,9 @@
       </div>
       <div class="hstat">
         <span class="k">Running score</span><span class="v" id="hScore"></span>
+      </div>
+      <div>
+        <button class="btn" id="logoutBtn">Logout</button>
       </div>
     </header>
     <!-- Thanh tab. data-tab cho JavaScript biết bấm nút nào thì mở tab nào. -->
